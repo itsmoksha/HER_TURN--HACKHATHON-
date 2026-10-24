@@ -1,9 +1,3 @@
-**HER TURN**
-
-**She cares for everyone. It's her turn to be cared for.**
-
-**Event:** recHERsion Hackathon, NITK
-
 ##  Problem Statement
 
 **PS1: Women's Healthcare**
@@ -31,18 +25,21 @@ The core idea is simple: **the patient uploads her prescriptions and medical fil
 
 ### Key Features
 
-| # | Feature | What it does |
-| 1 |  **Centralized Medical Records** | Store prescriptions, lab reports, scans, test results and discharge summaries in one place, and review them before doctor visits |
+ **Centralized Medical Records**: Store prescriptions, lab reports, scans, test results and discharge summaries in one place, and review them before doctor visits 
 
-| 2 |  **AI Health Assistant** | Ask health questions, understand medical terms in simple language, and get explanations of uploaded documents and general guidance on symptoms and next steps |
+**AI Health Assistant**: Ask health questions, understand medical terms in simple language, and get explanations of uploaded documents and general guidance on symptoms and next steps
 
-| 3 |  **Prescription Understanding** | Upload prescriptions and use AI-assisted text extraction and explanations; unclear medicine names or dosages are flagged to confirm with a doctor or pharmacist, never guessed |
+**Prescription Understanding**:  Upload prescriptions and use AI-assisted text extraction and explanations; unclear medicine names or dosages are flagged to confirm with a doctor or pharmacist, never guessed 
 
-| 4 |  **Medicine Reminders & Alerts** | Set reminders based on confirmed prescription instructions and receive alerts on the device |
-| 5 |  **Appointment & Follow-up Alerts** | Record appointments, get reminders, and track follow-up visits and checkups |
-| 6 |  **Trusted Person Access** | Invite a parent, child, spouse or friend to help with selected records, reminders and appointments; the woman can change or revoke access anytime |
-| 7 |  **Privacy & User Control** | Consent-based access, account and notification preferences, and security controls to protect sensitive health data |
-| 8 |  **Healthcare Guidance & Discovery** | Know when a concern needs professional assessment, see urgent warning signs, get general self-care tips for low-risk situations, and find nearby hospitals, clinics and specialists *(planned)* |
+**Medicine Reminders & Alerts**: Set reminders based on confirmed prescription instructions and receive alerts on the device 
+ 
+**Appointment & Follow-up Alerts**:  Record appointments, get reminders, and track follow-up visits and checkups 
+
+**Trusted Person Access** : Invite a parent, child, spouse or friend to help with selected records, reminders and appointments; the woman can change or revoke access anytime 
+
+**Privacy & User Control**: Consent-based access, account and notification preferences, and security controls to protect sensitive health data 
+
+**Healthcare Guidance & Discovery** : Know when a concern needs professional assessment, see urgent warning signs, get general self-care tips for low-risk situations, and find nearby hospitals, clinics and specialists 
 
 ###  How AI Is Integrated
 

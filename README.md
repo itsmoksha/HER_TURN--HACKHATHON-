@@ -120,18 +120,29 @@ If the project uses Ollama, ensure that the service is running and that the conf
 
 ## Prototype Screenshots
 
-| Home Page | 
-| <img width="1917" height="1077" alt="Screenshot 2026-10-25 230446" src="https://github.com/user-attachments/assets/2801c481-509a-4c86-ac6a-c115a88d264e" />|
-| Health Dashboard |
-|<img width="1916" height="868" alt="Screenshot 2026-10-25 230609" src="https://github.com/user-attachments/assets/0dde852d-c412-4f7e-9678-cc67c4babbb0" />|
-| AI Health Assistant |
-|<img width="1917" height="866" alt="Screenshot 2026-10-25 230640" src="https://github.com/user-attachments/assets/f27a8602-5c84-4725-a5c0-ea37f9524ffa" />|
-|Medical Records|
-|<img width="1915" height="1077" alt="Screenshot 2026-10-25 230721" src="https://github.com/user-attachments/assets/6ae0f24b-0346-4d10-82f9-15154e9c5eea" />|
-|Prescription Understanding | Reminders and Appointments |
-|<img width="1910" height="1078" alt="Screenshot 2026-10-25 230805" src="https://github.com/user-attachments/assets/5858d04b-45bb-42a6-b73a-4404708af657" />|
-| Reminders and Appointments |
-|<img width="1917" height="1078" alt="Screenshot 2026-10-25 230829" src="https://github.com/user-attachments/assets/d683273b-ab9d-4ce1-b8bc-dd7aebfcfc5a" />|
+**Home Page**
+
+ <img width="1917" height="1077" alt="Screenshot 2026-10-25 230446" src="https://github.com/user-attachments/assets/2801c481-509a-4c86-ac6a-c115a88d264e" />
+
+**Health Dashboard **
+
+<img width="1916" height="868" alt="Screenshot 2026-10-25 230609" src="https://github.com/user-attachments/assets/0dde852d-c412-4f7e-9678-cc67c4babbb0" />
+
+**AI Health Assistant**
+
+<img width="1917" height="866" alt="Screenshot 2026-10-25 230640" src="https://github.com/user-attachments/assets/f27a8602-5c84-4725-a5c0-ea37f9524ffa" />
+
+**Medical Records**
+
+<img width="1915" height="1077" alt="Screenshot 2026-10-25 230721" src="https://github.com/user-attachments/assets/6ae0f24b-0346-4d10-82f9-15154e9c5eea" />
+
+**Prescription Understanding**
+
+|<img width="1910" height="1078" alt="Screenshot 2026-10-25 230805" src="https://github.com/user-attachments/assets/5858d04b-45bb-42a6-b73a-4404708af657" />
+
+**Reminders and Appointments** 
+
+<img width="1917" height="1078" alt="Screenshot 2026-10-25 230829" src="https://github.com/user-attachments/assets/d683273b-ab9d-4ce1-b8bc-dd7aebfcfc5a" />|
 
 >
 

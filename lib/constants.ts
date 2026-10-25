@@ -155,6 +155,30 @@ export const TRIAGE_COLORS: Record<
     description: string
   }
 > = {
+  'normal': {
+    label: 'Normal / General',
+    color: '#2D7A4F',
+    bgLight: 'bg-emerald-50 dark:bg-emerald-950/30',
+    border: 'border-emerald-200 dark:border-emerald-800',
+    badgeVariant: 'success',
+    description: 'Routine wellness and non-urgent symptoms. Standard tracking advised.',
+  },
+  'caution': {
+    label: 'Caution / Moderate',
+    color: '#C47B2B',
+    bgLight: 'bg-amber-50 dark:bg-amber-950/30',
+    border: 'border-amber-200 dark:border-amber-800',
+    badgeVariant: 'warning',
+    description: 'Moderate symptoms requiring attention. Doctor consultation recommended.',
+  },
+  'urgent': {
+    label: 'Urgent Attention Required',
+    color: '#C0392B',
+    bgLight: 'bg-rose-50 dark:bg-rose-950/30',
+    border: 'border-rose-300 dark:border-rose-800',
+    badgeVariant: 'urgent',
+    description: 'High-urgency markers detected. Seek emergency medical care immediately.',
+  },
   'self-care': {
     label: 'Self-Care & Monitoring',
     color: '#2D7A4F',

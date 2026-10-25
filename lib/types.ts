@@ -37,6 +37,9 @@ export type DocumentType =
   | 'lab_report'
   | 'scan'
   | 'summary'
+  | 'discharge_summary'
+  | 'test_result'
+  | 'vaccination'
   | 'other';
 
 export interface ExtractedField {
@@ -69,19 +72,27 @@ export interface MedicalDocument {
 
 export interface Medicine {
   id: string;
-  user_id: string;
+  user_id?: string;
   document_id?: string | null;
   name: string;
   strength: string;
   dose: string;
   frequency: string;
-  duration: string;
+  duration?: string;
   instructions: string;
-  start_date: string;
+  start_date?: string;
   end_date?: string | null;
-  is_confirmed: boolean;
-  plain_language_explanation: string;
-  created_at: string;
+  is_confirmed?: boolean;
+  plain_language_explanation?: string;
+  created_at?: string;
+  // Dashboard & schedule fields
+  scheduled_time?: string;
+  scheduledTime?: string;
+  timeOfDay?: 'morning' | 'afternoon' | 'evening' | 'night' | string;
+  status?: 'taken' | 'upcoming' | 'missed' | 'snoozed';
+  takenAt?: string;
+  genericName?: string;
+  dosage?: string;
 }
 
 export type ReminderType = 'medicine' | 'appointment' | 'refill' | 'custom';
@@ -160,7 +171,13 @@ export interface AccessLog {
 }
 
 export type ChatRole = 'user' | 'assistant' | 'system';
-export type TriageLevel = 'normal' | 'caution' | 'urgent';
+export type TriageLevel =
+  | 'normal'
+  | 'caution'
+  | 'urgent'
+  | 'self-care'
+  | 'see-doctor'
+  | 'seek-care-now';
 
 export interface Citation {
   document_id: string;

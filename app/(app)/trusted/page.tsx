@@ -263,7 +263,7 @@ export default function TrustedPage() {
                         Edit
                       </Button>
                     </DialogTrigger>
-                    <PermissionEditorDialog personName={mockTrustedPerson.trusted_name} />
+                    <PermissionEditorDialog personName={mockTrustedPerson.trusted_name || mockTrustedPerson.name || 'Trusted Person'} />
                   </Dialog>
 
                   <Dialog open={revokeDialogOpen} onOpenChange={setRevokeDialogOpen}>

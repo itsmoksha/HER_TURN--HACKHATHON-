@@ -1,0 +1,25 @@
+
+> her-turn@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.3
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+ ⨯ ESLint: Failed to load config "next/typescript" to extend from. Referenced from: C:\Users\Moksha\OneDrive\Desktop\HER-TURN\HER_TURN--HACKHATHON-\.eslintrc.json
+Failed to compile.
+
+./app/(app)/dashboard/page.tsx:115:11
+Type error: Type '(Medicine | { status: "taken" | "upcoming" | "missed" | "snoozed"; id: string; user_id: string; document_id?: string | null | undefined; name: string; strength: string; dose: string; ... 7 more ...; created_at: string; })[]' is not assignable to type 'Medicine[]'.
+  Type 'Medicine | { status: "taken" | "upcoming" | "missed" | "snoozed"; id: string; user_id: string; document_id?: string | null | undefined; name: string; strength: string; dose: string; ... 7 more ...; created_at: string; }' is not assignable to type 'Medicine'.
+    Type 'Medicine' is missing the following properties from type 'Medicine': scheduled_time, status
+
+[0m [90m 113 |[39m[0m
+[0m [90m 114 |[39m     [90m// Optimistic UI update[39m[0m
+[0m[31m[1m>[22m[39m[90m 115 |[39m     [36mconst[39m updatedMeds[33m:[39m [33mMedicine[39m[] [33m=[39m data[33m.[39mtodaysMedicines[33m.[39mmap((m) [33m=>[39m[0m
+[0m [90m     |[39m           [31m[1m^[22m[39m[0m
+[0m [90m 116 |[39m       m[33m.[39mid [33m===[39m medicineId [33m?[39m { [33m...[39mm[33m,[39m status[33m:[39m nextStatus [36mas[39m [33mMedicine[39m[[32m'status'[39m] } [33m:[39m m[0m
+[0m [90m 117 |[39m     )[0m
+[0m [90m 118 |[39m[0m

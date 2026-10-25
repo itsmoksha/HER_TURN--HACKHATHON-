@@ -666,6 +666,7 @@ export const mockChatHistory: ChatMessage[] = [
   {
     id: '77777777-7777-4000-a000-000000000004',
     session_id: '66666666-6666-4000-a000-000000000001',
+    user_id: DEMO_USER_ID,
     role: 'assistant',
     content:
       'That discipline with your 7:00 AM routine makes a huge clinical difference — keep that up!\n\nRegarding your Vitamin D:\n- In June, your level was **12.1 ng/mL** (severe deficiency).\n- By September 10, it rose to **18.2 ng/mL**.\n\nWhile 18.2 ng/mL is still clinically deficient (< 20 ng/mL), it proves your weekly **60,000 IU Cholecalciferol** is replenishing your stores. Because Vitamin D is a fat-soluble hormone stored deep in adipose tissue, rebuilding baseline reserves can take 8 to 12 weeks of consistent intake.\n\n**Practical Tips:**\n1. Always take your Sunday 60k capsule with your heaviest meal or with whole milk/yogurt, as dietary fat enhances absorption by up to 30%.\n2. Ensure you do not take iron tablets or antacids in the same hour.',

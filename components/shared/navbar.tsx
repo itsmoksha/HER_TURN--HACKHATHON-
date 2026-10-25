@@ -13,8 +13,12 @@ import {
   Calendar,
   CheckCircle,
   FileText,
+  User,
+  HeartHandshake,
+  ChevronDown,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useDemoMode } from "@/components/providers/demo-mode-provider"
 
 export interface NavbarProps {
   onToggleMobileSidebar?: () => void
@@ -29,6 +33,7 @@ export function Navbar({
 }: NavbarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const { userRole, caretakerDetails, setIsRoleModalOpen } = useDemoMode()
   const [showNotifications, setShowNotifications] = useState(false)
   const [showSearchModal, setShowSearchModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -121,6 +126,33 @@ export function Navbar({
 
         {/* Right: Quick Search, Notifications, Avatar */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Role Switcher Pill */}
+          <button
+            type="button"
+            onClick={() => setIsRoleModalOpen(true)}
+            className={cn(
+              "flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium border transition-all shadow-xs hover:opacity-90",
+              userRole === 'caretaker'
+                ? "bg-purple-50 text-purple-900 border-purple-200 dark:bg-purple-950/60 dark:text-purple-200 dark:border-purple-800"
+                : "bg-rose-50 text-rose-900 border-rose-200 dark:bg-rose-950/60 dark:text-rose-200 dark:border-rose-800"
+            )}
+            title="Click to switch between Self and Caretaker modes"
+          >
+            {userRole === 'caretaker' ? (
+              <>
+                <HeartHandshake className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+                <span className="hidden sm:inline font-semibold">Caretaker for {caretakerDetails.patientName}</span>
+                <span className="sm:hidden font-semibold">Caretaker</span>
+              </>
+            ) : (
+              <>
+                <User className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
+                <span className="font-semibold">Self Mode</span>
+              </>
+            )}
+            <ChevronDown className="h-3 w-3 opacity-60" />
+          </button>
+
           {/* Search Trigger */}
           <button
             type="button"

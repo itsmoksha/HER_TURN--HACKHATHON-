@@ -22,7 +22,8 @@ import { formatDate } from '@/lib/utils'
 import { toast } from 'sonner'
 
 export interface PrepareVisitModalProps {
-  isOpen: boolean
+  isOpen?: boolean
+  open?: boolean
   onClose: () => void
   patientName?: string
   doctorName?: string
@@ -31,11 +32,13 @@ export interface PrepareVisitModalProps {
 
 export function PrepareVisitModal({
   isOpen,
+  open,
   onClose,
   patientName = 'Priya Venkataraman',
   doctorName = 'Dr. Ananya Sharma (MD, Endocrinology)',
   documentTitle,
 }: PrepareVisitModalProps) {
+  const isModalOpen = isOpen ?? open ?? false
   const [copied, setCopied] = useState(false)
 
   // Current active medications
@@ -121,7 +124,7 @@ CONFIDENTIAL & PERSONAL MEDICAL RECORD SUMMARY
     })
   }
 
-  if (!isOpen) return null
+  if (!isModalOpen) return null
 
   return (
     <AnimatePresence>

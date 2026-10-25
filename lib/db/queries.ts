@@ -1,5 +1,32 @@
 import { MedicalDocument, ExtractedField, Medicine, LabTrend } from '@/lib/types'
 
+// ─── Widget / Component shared types ─────────────────────────────────────────
+
+export interface AdherenceDay {
+  dayName: string
+  fullDate: string
+  status: 'full' | 'partial' | 'missed' | 'today' | 'none'
+  percent: number
+  totalDoses: number
+  takenDoses: number
+}
+
+export interface ReadinessItem {
+  id: string
+  title: string
+  description: string
+  isComplete: boolean
+  category: string
+  statusText?: string
+}
+
+export interface HealthReadinessData {
+  score: number
+  maxScore: number
+  summary: string
+  items: ReadinessItem[]
+}
+
 export interface DocumentGlossaryItem {
   term: string
   definition: string
@@ -693,16 +720,7 @@ export async function getVisitPreparationData(patientName = 'Priya Venkataraman'
 
 // ─── Dashboard data aggregation ───────────────────────────────────────────────
 
-export interface Medicine {
-  id: string
-  name: string
-  strength: string
-  dose: string
-  frequency: string
-  instructions: string
-  scheduled_time: string
-  status: 'taken' | 'upcoming' | 'missed' | 'snoozed'
-}
+export type { Medicine }
 
 export interface DashboardData {
   greeting: string
@@ -721,14 +739,13 @@ export async function getDashboardData(): Promise<DashboardData> {
   const { mockUser, mockMedicines, mockAppointments, mockDocuments, mockReminders } = await import('@/lib/db/mock-data')
 
   const todaysMedicines: Medicine[] = mockMedicines.slice(0, 4).map((m, i) => ({
-    id: m.id,
-    name: m.name,
-    strength: m.strength,
-    dose: m.dose,
-    frequency: m.frequency,
-    instructions: m.instructions ?? '',
+    ...m,
     scheduled_time: ['07:00 AM', '02:00 PM', '08:00 AM', '06:00 PM'][i] ?? '08:00 AM',
-    status: i === 0 ? 'taken' : i === 1 ? 'upcoming' : i === 2 ? 'upcoming' : 'upcoming',
+    scheduledTime: ['07:00 AM', '02:00 PM', '08:00 AM', '06:00 PM'][i] ?? '08:00 AM',
+    timeOfDay: ['morning', 'afternoon', 'morning', 'evening'][i] ?? 'morning',
+    genericName: m.name,
+    dosage: m.dose,
+    status: (i === 0 ? 'taken' : 'upcoming') as 'taken' | 'upcoming',
   }))
 
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -744,7 +761,7 @@ export async function getDashboardData(): Promise<DashboardData> {
 
   return {
     greeting: 'Good morning',
-    user: { name: mockUser.name, avatar_url: mockUser.avatar_url },
+    user: { name: mockUser.name, avatar_url: mockUser.avatar_url ?? undefined },
     todaysMedicines,
     upcomingAppointments: mockAppointments.map((a) => ({
       id: a.id,
@@ -759,7 +776,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       title: d.title,
       type: d.type,
       document_date: d.document_date ?? '',
-      doctor_name: d.doctor_name,
+      doctor_name: d.doctor_name ?? undefined,
     })),
     weeklyAdherence,
     healthReadiness: {
@@ -784,4 +801,16 @@ export async function updateMedicineStatus(
   // In demo mode: return success immediately
   console.info(`[Demo] Medicine ${medicineId} marked as ${status}`)
   return { success: true }
+}
+
+/** Reset all demo data stored in localStorage */
+export function resetLocalDemoData(): void {
+  if (typeof window !== 'undefined') {
+    try {
+      window.localStorage.removeItem('her_turn_demo_mode')
+      window.localStorage.removeItem('her_turn_demo_state')
+    } catch (e) {
+      console.warn('Failed to reset demo data from storage', e)
+    }
+  }
 }

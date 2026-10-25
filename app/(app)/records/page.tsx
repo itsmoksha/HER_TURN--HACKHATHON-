@@ -26,8 +26,10 @@ import { MedicalDocument, DocumentType } from '@/lib/types'
 import { getMedicalDocuments, DetailedDocument } from '@/lib/db/queries'
 import { DocumentCard, DOCUMENT_TYPE_CONFIG } from '@/components/records/document-card'
 import { formatDate } from '@/lib/utils'
+import { useDemoMode } from '@/components/providers/demo-mode-provider'
 
 export default function RecordsPage() {
+  const { storedDocuments, userRole, caretakerDetails } = useDemoMode()
   const [documents, setDocuments] = useState<DetailedDocument[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -42,7 +44,9 @@ export default function RecordsPage() {
       try {
         setLoading(true)
         const docs = await getMedicalDocuments()
-        setDocuments(docs)
+        // Merge stored user/caretaker uploaded files at the top
+        const merged = [...(storedDocuments as any[]), ...docs]
+        setDocuments(merged)
       } catch (err) {
         console.error('Failed to load documents', err)
       } finally {
@@ -50,7 +54,7 @@ export default function RecordsPage() {
       }
     }
     load()
-  }, [])
+  }, [storedDocuments])
 
   // Delete handler
   const handleDeleteDocument = (id: string) => {
@@ -156,10 +160,12 @@ export default function RecordsPage() {
                 </span>
               </div>
               <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-                Your Medical Records
+                {userRole === 'caretaker' ? `${caretakerDetails.patientName}'s Medical Records` : 'Your Medical Records'}
               </h1>
               <p className="text-muted-foreground text-sm sm:text-base mt-1 max-w-2xl">
-                Every prescription, lab panel, and ultrasound explained in clear, compassionate language.
+                {userRole === 'caretaker'
+                  ? `Viewing and managing clinical files and prescriptions as Caregiver (${caretakerDetails.relation}).`
+                  : 'Every prescription, lab panel, and ultrasound explained in clear, compassionate language.'}
               </p>
             </div>
 

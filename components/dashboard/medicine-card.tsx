@@ -69,9 +69,9 @@ export function MedicineCard({ medicine, onMarkTaken, compact = false }: Medicin
           <div>
             <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
               <Clock className="h-3 w-3 text-muted-foreground/70" />
-              <span>{medicine.scheduledTime}</span>
+              <span>{medicine.scheduledTime || medicine.scheduled_time || "08:00 AM"}</span>
               <span className="text-muted-foreground/40">•</span>
-              <span className="capitalize">{medicine.timeOfDay}</span>
+              <span className="capitalize">{medicine.timeOfDay || medicine.frequency || "daily"}</span>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export function MedicineCard({ medicine, onMarkTaken, compact = false }: Medicin
         </div>
 
         <p className="text-xs text-muted-foreground/90 font-sans">
-          {medicine.genericName} • <span className="font-medium text-foreground/80">{medicine.dosage}</span>
+          {medicine.genericName || medicine.name} • <span className="font-medium text-foreground/80">{medicine.dosage || medicine.dose}</span>
         </p>
 
         {!compact && medicine.instructions && (

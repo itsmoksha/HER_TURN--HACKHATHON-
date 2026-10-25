@@ -32,6 +32,8 @@ import {
 import { MedicineCard } from "@/components/dashboard/medicine-card"
 import { AdherenceWidget } from "@/components/dashboard/adherence-widget"
 import { HealthReadinessCard } from "@/components/dashboard/health-readiness-card"
+import { CaretakerPanel } from "@/components/dashboard/caretaker-panel"
+import { AiAlertsWidget } from "@/components/dashboard/ai-alerts-widget"
 import { useDemoMode } from "@/components/providers/demo-mode-provider"
 import { cn } from "@/lib/utils"
 
@@ -58,7 +60,13 @@ const itemVariants = {
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { patient } = useDemoMode()
+  const {
+    patient,
+    userRole,
+    caretakerDetails,
+    storedAlerts,
+    storedDocuments,
+  } = useDemoMode()
   const [data, setData] = useState<DashboardData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState<"all" | "morning" | "afternoon" | "night">("all")
@@ -82,9 +90,11 @@ export default function DashboardPage() {
   // Time-based greeting generator
   const getGreeting = () => {
     const hour = new Date().getHours()
-    if (hour < 12) return { text: `Good morning, ${patient.preferredName} ☀️`, timeTag: "Morning Routine" }
-    if (hour < 17) return { text: `Good afternoon, ${patient.preferredName} 🌤️`, timeTag: "Afternoon Check-in" }
-    return { text: `Good evening, ${patient.preferredName} 🌙`, timeTag: "Evening Care" }
+    const name = userRole === 'caretaker' ? caretakerDetails.caretakerName : patient.preferredName
+    const roleTag = userRole === 'caretaker' ? `Managing for ${caretakerDetails.patientName}` : "Morning Routine"
+    if (hour < 12) return { text: `Good morning, ${name} ☀️`, timeTag: roleTag }
+    if (hour < 17) return { text: `Good afternoon, ${name} 🌤️`, timeTag: roleTag }
+    return { text: `Good evening, ${name} 🌙`, timeTag: roleTag }
   }
 
   // Indian Date Format: Sunday, 25 October 2026
@@ -102,8 +112,8 @@ export default function DashboardPage() {
     if (!data) return
 
     // Optimistic UI update
-    const updatedMeds = data.medicines.map((m) =>
-      m.id === medicineId ? { ...m, status: nextStatus } : m
+    const updatedMeds: Medicine[] = data.todaysMedicines.map((m) =>
+      m.id === medicineId ? { ...m, status: nextStatus as Medicine['status'] } : m
     )
 
     const takenCount = updatedMeds.filter((m) => m.status === "taken").length
@@ -111,16 +121,14 @@ export default function DashboardPage() {
 
     setData({
       ...data,
-      medicines: updatedMeds,
-      readiness: {
-        ...data.readiness,
-        items: data.readiness.items.map((item) =>
-          item.category === "medicines"
+      todaysMedicines: updatedMeds,
+      healthReadiness: {
+        ...data.healthReadiness,
+        items: data.healthReadiness.items.map((item) =>
+          item.label === "Medicines taken today"
             ? {
                 ...item,
-                description: `${takenCount} of ${totalCount} medicines taken today`,
-                isComplete: takenCount > 0,
-                statusText: `${takenCount}/${totalCount} taken`,
+                done: takenCount > 0,
               }
             : item
         ),
@@ -128,7 +136,10 @@ export default function DashboardPage() {
     })
 
     try {
-      await updateMedicineStatus(medicineId, nextStatus)
+      // Only pass valid status values; map 'upcoming' back to a no-op by skipping
+      if (nextStatus === "taken") {
+        await updateMedicineStatus(medicineId, "taken")
+      }
     } catch (err) {
       console.error("Failed to sync medicine status", err)
     }
@@ -142,14 +153,31 @@ export default function DashboardPage() {
   }
 
   // Filtered medicines
-  const filteredMedicines = data?.medicines.filter((m) => {
+  const filteredMedicines = data?.todaysMedicines.filter((m) => {
     if (activeFilter === "all") return true
-    return m.timeOfDay === activeFilter
+    return (m as any).timeOfDay === activeFilter
   }) || []
 
-  const takenMedicinesCount = data?.medicines.filter((m) => m.status === "taken").length || 0
-  const totalMedicinesCount = data?.medicines.length || 0
+  const takenMedicinesCount = data?.todaysMedicines.filter((m) => m.status === "taken").length || 0
+  const totalMedicinesCount = data?.todaysMedicines.length || 0
   const greeting = getGreeting()
+
+  const recentDocs = [
+    ...(storedDocuments || []).map((d) => ({
+      id: d.id,
+      type: d.type.toUpperCase(),
+      date: d.document_date,
+      title: d.title,
+      summarySnippet: d.ai_summary || 'Verified medical record stored in vault.',
+    })),
+    ...(data?.recentDocuments || []).map((d) => ({
+      id: d.id,
+      type: d.type.toUpperCase(),
+      date: d.document_date,
+      title: d.title,
+      summarySnippet: '',
+    })),
+  ].slice(0, 3)
 
   // SKELETON LOADING STATE
   if (isLoading) {
@@ -244,6 +272,11 @@ export default function DashboardPage() {
         </div>
       </motion.section>
 
+      {/* CARETAKER MANAGEMENT PANEL OR INCOMING CARE NOTES */}
+      <motion.section variants={itemVariants}>
+        <CaretakerPanel />
+      </motion.section>
+
       {/* 2. QUICK ACTIONS ROW */}
       <motion.section variants={itemVariants}>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
@@ -331,7 +364,7 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              Today's Medicines & Routine
+              Today&apos;s Medicines & Routine
             </h3>
             <p className="text-xs text-muted-foreground">
               Tap any dose to log as taken. All updates save instantly.
@@ -448,21 +481,45 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           <div className="lg:col-span-7 flex flex-col">
             <AdherenceWidget
-              percentage={data?.adherence.percentage}
-              streakDays={data?.adherence.streakDays}
-              encouragingMessage={data?.adherence.encouragingMessage}
-              days={data?.adherence.days}
+              percentage={data?.weeklyAdherence?.percentage}
+              streakDays={data?.weeklyAdherence?.streak}
+              encouragingMessage={undefined}
+              days={data?.weeklyAdherence?.days?.map((d) => ({
+                dayName: d.day,
+                fullDate: d.day,
+                status: d.taken ? 'full' : d.missed ? 'missed' : 'none',
+                percent: d.taken ? 100 : 0,
+                totalDoses: 5,
+                takenDoses: d.taken ? 5 : 0,
+              }))}
               className="h-full"
             />
           </div>
 
           <div className="lg:col-span-5 flex flex-col">
             <HealthReadinessCard
-              data={data?.readiness}
+              data={data?.healthReadiness ? {
+                score: data.healthReadiness.items.filter((i) => i.done).length,
+                maxScore: data.healthReadiness.items.length,
+                summary: 'Your daily care plan is on track.',
+                items: data.healthReadiness.items.map((item, idx) => ({
+                  id: String(idx),
+                  title: item.label,
+                  description: '',
+                  isComplete: item.done,
+                  category: 'general',
+                  statusText: item.done ? 'Done' : 'Pending',
+                }))
+              } : undefined}
               className="h-full"
             />
           </div>
         </div>
+      </motion.section>
+
+      {/* 5.5 AI SCHEDULED ALERTS WIDGET (Ollama Analyzed) */}
+      <motion.section variants={itemVariants}>
+        <AiAlertsWidget />
       </motion.section>
 
       {/* 6. UPCOMING APPOINTMENTS & RECENT DOCUMENTS */}
@@ -486,7 +543,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-3">
-              {data?.appointments.slice(0, 2).map((apt) => (
+              {data?.upcomingAppointments.slice(0, 2).map((apt) => (
                 <div
                   key={apt.id}
                   className="group relative rounded-xl border border-border/70 p-4 hover:border-plum-300 dark:hover:border-plum-800 transition-all bg-card/60"
@@ -494,33 +551,24 @@ export default function DashboardPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-plum-100 text-plum-950 font-serif font-bold text-sm dark:bg-plum-900/50 dark:text-sand-100">
-                        {apt.doctorName.charAt(4)}
+                        {apt.doctor_name ? apt.doctor_name.charAt(4) : '👩'}
                       </div>
 
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
                           <h4 className="text-sm font-bold text-foreground group-hover:text-plum-950 dark:group-hover:text-sand-100 transition-colors">
-                            {apt.doctorName}
+                            {apt.doctor_name}
                           </h4>
                           <span
-                            className={cn(
-                              "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold",
-                              apt.type === "video"
-                                ? "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300"
-                                : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
-                            )}
+                            className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                           >
-                            {apt.type === "video" ? (
-                              <Video className="h-2.5 w-2.5" />
-                            ) : (
-                              <MapPin className="h-2.5 w-2.5" />
-                            )}
-                            {apt.type === "video" ? "Video Call" : "In Person"}
+                            <MapPin className="h-2.5 w-2.5" />
+                            In Person
                           </span>
                         </div>
 
                         <p className="text-xs text-muted-foreground">
-                          {apt.specialty} • {apt.facility}
+                          {apt.specialty}
                         </p>
                       </div>
                     </div>
@@ -528,14 +576,14 @@ export default function DashboardPage() {
 
                   <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border/50 pt-2 text-xs">
                     <span className="font-semibold text-plum-950 dark:text-sand-200">
-                      {apt.date} • {apt.time}
+                      {apt.appointment_date}
                     </span>
                     <span className="text-muted-foreground">{apt.location}</span>
                   </div>
 
-                  {apt.preparationNote && (
+                  {apt.notes && (
                     <p className="mt-2 text-[11px] text-muted-foreground/90 bg-muted/50 rounded-lg p-2">
-                      💡 <strong>Prep:</strong> {apt.preparationNote}
+                      💡 <strong>Note:</strong> {apt.notes}
                     </p>
                   )}
                 </div>
@@ -561,7 +609,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-3">
-              {data?.documents.slice(0, 3).map((doc) => (
+              {recentDocs.map((doc: any) => (
                 <Link
                   key={doc.id}
                   href={`/records?id=${doc.id}`}

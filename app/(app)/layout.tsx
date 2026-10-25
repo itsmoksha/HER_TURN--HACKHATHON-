@@ -20,6 +20,7 @@ import {
 } from "@/components/providers/demo-mode-provider"
 import { Sidebar } from "@/components/shared/sidebar"
 import { Navbar } from "@/components/shared/navbar"
+import { RoleSelectionDialog } from "@/components/shared/role-selection-dialog"
 
 // Bottom navigation items for mobile thumbs
 const MOBILE_BOTTOM_NAV = [
@@ -98,6 +99,9 @@ function AppLayoutInner({ children }: { children: React.ReactNode }) {
           </main>
         </div>
       </div>
+
+      {/* Role Selection Modal (Self vs Caretaker) */}
+      <RoleSelectionDialog />
 
       {/* Mobile Bottom Navigation Bar */}
       <nav

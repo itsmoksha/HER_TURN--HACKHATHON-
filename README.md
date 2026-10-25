@@ -1,53 +1,194 @@
-##  Problem Statement
+# HER TURN – AI-Powered Women's Healthcare Companion
 
-**PS1: Women's Healthcare**
+An AI-integrated healthcare companion designed to empower women to better understand and manage their health. HER TURN brings medical records, AI-powered document understanding, medicine reminders, appointment tracking, and consent-based information sharing into one platform.
 
-Design and build a digital solution that addresses challenges in women's healthcare, such as gaps in diagnosis, symptom tracking, health awareness, or access to meaningful clinical insights. Develop an innovative solution that empowers women to better understand and manage their health.
+> **Our mission:** Help women prioritize their own health by making healthcare information easier to understand, organize, and manage.
 
-## Problem Explanation
+## Live Demo
 
-Women often take care of everyone around them while putting their own health last. Busy routines, family responsibilities, cost and a lack of awareness mean health concerns get ignored until they become serious. This leads to several problems:
+**Deployed Application:** [HER TURN – Live Demo](your-vercel-deployment-url)
 
-- **Delayed care:** checkups, follow-ups and treatments are postponed or skipped
-- **Scattered records:** prescriptions, lab reports and scans are spread across paper files, phone galleries and chat apps, and are hard to find when needed
-- **Hard-to-understand reports:** medical terms and prescriptions are confusing, so many women don't fully understand their own health
-- **Missed medicines and appointments:** without reminders, doses and follow-up visits are forgotten
-- **Uncertainty about when to see a doctor:** it's difficult to tell a minor issue from one that needs attention
-- **No safe way to get help:** sharing everything with a family member is not always comfortable, and there is rarely a way to share only selected information
+## Problem Statement
 
-## Our Idea: HER TURN
+Women often prioritize the healthcare needs of their families while neglecting their own health. Busy schedules, family responsibilities, financial constraints, and a lack of awareness can cause health concerns to go unaddressed until they become serious.
 
-To tackle these problems, we built **HER TURN**, an **AI-integrated healthcare companion** for women. It brings medical records, AI-powered understanding and timely reminders into one platform, so women can finally make time for their own health.
+Common challenges include:
+
+- **Delayed Care:** Checkups, treatments, and follow-ups are postponed or missed.
+- **Scattered Medical Records:** Prescriptions, lab reports, scans, and test results are stored across paper files, phone galleries, and messaging applications.
+- **Difficult-to-Understand Reports:** Complex medical terminology makes it difficult to understand personal health information.
+- **Missed Medicines and Appointments:** Medication schedules and follow-up visits can be forgotten.
+- **Uncertainty About Seeking Care:** Users may struggle to recognize when a symptom requires professional assessment.
+- **Limited Information-Sharing Control:** Sharing complete medical histories with family members may not always be comfortable or appropriate.
 
 ## Proposed Solution
 
-The core idea is simple: **the patient uploads her prescriptions and medical files, the platform stores them, and the AI uses them to answer her questions and keep her on track with alerts.**
+HER TURN provides a centralized digital healthcare platform where users can upload medical documents, understand their health information with AI assistance, manage reminders, and selectively share records with trusted individuals.
 
-### Key Features
+The platform uses a user's uploaded medical records as context for relevant AI-assisted explanations, helping make healthcare information more accessible and understandable.
 
- **Centralized Medical Records**: Store prescriptions, lab reports, scans, test results and discharge summaries in one place, and review them before doctor visits 
+## Key Features
 
-**AI Health Assistant**: Ask health questions, understand medical terms in simple language, and get explanations of uploaded documents and general guidance on symptoms and next steps
+- **Centralized Medical Records:** Upload and organize prescriptions, laboratory reports, scans, test results, and discharge summaries in one place.
+- **AI Health Assistant:** Ask health-related questions, understand medical terminology, and receive explanations grounded in available personal medical records.
+- **Prescription Understanding:** Use AI-assisted text extraction to interpret prescription information. Unclear medicine names or dosages are flagged for confirmation rather than guessed.
+- **Medicine Reminders and Alerts:** Set reminders using confirmed prescription instructions and receive notifications on the device.
+- **Appointment and Follow-up Tracking:** Record medical appointments, schedule reminders, and keep track of follow-up visits and checkups.
+- **Trusted Person Access:** Share selected medical records, reminders, and appointment information with a parent, child, spouse, or trusted friend, with the ability to change or revoke access.
+- **Privacy and User Control:** Support consent-based access, notification preferences, and controls for protecting sensitive health information.
+- **Healthcare Guidance and Discovery:** Provide general self-care information, highlight urgent warning signs, explain when professional assessment may be needed, and help users discover nearby hospitals, clinics, and specialists.
 
-**Prescription Understanding**:  Upload prescriptions and use AI-assisted text extraction and explanations; unclear medicine names or dosages are flagged to confirm with a doctor or pharmacist, never guessed 
+## AI Integration Workflow
 
-**Medicine Reminders & Alerts**: Set reminders based on confirmed prescription instructions and receive alerts on the device 
- 
-**Appointment & Follow-up Alerts**:  Record appointments, get reminders, and track follow-up visits and checkups 
+1. **Upload:** The user uploads a prescription, laboratory report, or other medical document.
+2. **Extract:** AI-assisted document processing extracts relevant text and information.
+3. **Store:** The original document and its extracted information are organized in the user's private medical records.
+4. **Ask:** The user asks a question, and the AI uses relevant available medical records as context to provide an explanation in simple language.
+5. **Remind:** Confirmed medicine and appointment details can be used to create reminders and alerts when the user chooses.
 
-**Trusted Person Access** : Invite a parent, child, spouse or friend to help with selected records, reminders and appointments; the woman can change or revoke access anytime 
+## AI Safety and Responsible Healthcare
 
-**Privacy & User Control**: Consent-based access, account and notification preferences, and security controls to protect sensitive health data 
+HER TURN is designed to support healthcare understanding rather than replace professional medical care.
 
-**Healthcare Guidance & Discovery** : Know when a concern needs professional assessment, see urgent warning signs, get general self-care tips for low-risk situations, and find nearby hospitals, clinics and specialists 
+- The AI does not provide definitive medical diagnoses or prescribe medicines.
+- Unclear prescription details are flagged for confirmation by a qualified doctor or pharmacist.
+- AI responses should acknowledge uncertainty rather than invent missing information.
+- Urgent warning signs prompt users to seek appropriate medical care.
+- Access to personal medical information should be based on user consent and appropriate security controls.
 
-###  How AI Is Integrated
+## Prerequisites
 
-1. **Upload:** the user uploads a prescription or medical report.
-2. **Extract:** AI-assisted text extraction reads the document's content.
-3. **Store:** the document and its extracted information are saved in the user's private records.
-4. **Ask:** when the user asks a question, the AI answers using *her own uploaded records* as context, in simple language, instead of giving generic replies.
-5. **Remind:** if the user chooses, confirmed medicine and appointment details become reminders and alerts.
+Before running the project locally, install the following tools:
 
-**Safety built in:** the AI does not give diagnoses or prescribe medicines, it admits when it is unsure, and it flags unclear information for a doctor or pharmacist to confirm. Urgent warning signs prompt the user to seek medical care.
+1. **Node.js (LTS):** [https://nodejs.org/en/download](https://nodejs.org/en/download)
+2. **Git:** [https://git-scm.com/downloads](https://git-scm.com/downloads)
+3. **Python:** [https://www.python.org/downloads/](https://www.python.org/downloads/) *(if required by the backend)*
+4. **Ollama:** [https://ollama.com/download](https://ollama.com/download) *(if using a locally hosted language model)*
+
+> The exact requirements depend on the frontend, backend, and AI services configured in the project.
+
+##
+
+## Running the Project
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The Vite application will usually be available at:
+
+```text
+http://localhost:3000
+
+```
+
+Keep the terminal running while using the application.
+
+### Backend Setup (If Applicable)
+
+If the project includes a Python backend, open another terminal in the backend directory.
+
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the backend using the actual module and application name configured in your project. For example, for a FastAPI application defined as `app` in `main.py`:
+
+```bash
+uvicorn main:app --reload
+```
+
+The backend will typically run at:
+
+```text
+http://localhost:8000
+```
+
+If the project uses Ollama, ensure that the service is running and that the configured model has been downloaded before using AI features.
+
+## Prototype Screenshots
+
+| Home Page | Health Dashboard |
+| --------- | ---------------- |
+|           |                  |
+
+| AI Health Assistant | Medical Records |
+| ------------------- | --------------- |
+|                     |                 |
+
+| Prescription Understanding | Reminders and Appointments |
+| -------------------------- | -------------------------- |
+|                            |                            |
+
+>
+
+## Project Structure
+
+```text
+HER_TURN--HACKHATHON-/
+├── app/                        # Main Application (Next.js 14 App Router)
+│   ├── (app)/                  
+│   │   ├── appointments/       
+│   │   ├── assistant/          
+│   │   ├── dashboard/          
+│   │   ├── guidance/          
+│   │   ├── privacy/            
+│   │   ├── records/            
+│   │   ├── reminders/          
+│   │   ├── trusted/            
+│   │   └── women/           
+│   │
+│   ├── (auth)/                 # User authentication (Login, Signup, Onboarding)
+│   ├── api/                   
+│   └── demo/                   
+│
+├── components/                 # Reusable UI Components
+│   ├── dashboard/              
+│   ├── records/               
+│   ├── providers/              
+│   ├── shared/                 
+│   └── ui/                     
+│
+├── lib/                        # Business Logic, AI & Database Utilities
+│   ├── ai/                     
+│   └── db/                     
+│
+├── supabase/                   # Database schemas (PostgreSQL tables & RLS policies)
+├── public/                     # Static media, icons & assets
+└── tests/                      
+
+```
+
+## Tech Stack
+
+- **Frontend:** React, Vite, TypeScript
+- **AI Integration:** AI-powered document understanding and contextual health assistance
+- **Backend:** Update with the framework used in the implementation
+- **Database and Storage:** Update with the configured database and file-storage solution
+- **Deployment:** Vercel for the frontend
+
+## Deployment
+
+The frontend is deployed using Vercel.
+
+- **Live Application:** [https://her-turn-hackhathon.vercel.app/](https://her-turn-hackhathon.vercel.app/)
+- **Deployment Platform:** [https://vercel.com/](https://vercel.com/)
+
+Configure the required environment variables in the Vercel project settings. If the AI assistant depends on a separate backend or a locally hosted model, ensure that the production frontend points to an appropriately deployed and secured backend. A Vercel frontend cannot directly access an Ollama service running on a developer's local machine.
 
